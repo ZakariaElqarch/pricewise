@@ -57,16 +57,23 @@ export async function scrapeAmazonProduct(url: string) {
     const currency = extractCyrency($(".a-price-symbol"));
 
     const discountRate = $(".savingsPercentage").text().replace(/[-%]/g, "");
-    
-    console.log({
+
+    // Contruct data object with scraped information
+    const data = {
+      url,
+      currency: currency || "$",
+      image: imageUrls[0],
       title,
-      currentPrice,
-      originalPrice,
-      outOfStock,
-      imageUrls,
-      currency,
-      discountRate,
-    });
+      currentPrice: Number(currentPrice),
+      originalPrice: Number(originalPrice),
+      priceHistory: [],
+      discountRate: Number(discountRate),
+      category: "category",
+      reviewCount: 100,
+      stars: 4.5,
+      isOutOfStock: outOfStock,
+    };
+    console.log(data);
   } catch (error: any) {
     throw new Error(`Faileed to scrape products: ${error.message}`);
   }
